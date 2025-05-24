@@ -12,11 +12,11 @@
     <div class="gradient-bg text-white py-8 shadow-lg">
         <div class="container mx-auto px-4">
             <div class="flex flex-col items-center">
-                <h1 class="text-4xl font-bold mb-2 flex items-center">
+                <h1 class="text-4xl font-bold mb-2 flex items-center text-center">
                     <i class="fas fa-calculator mr-3 animate-bounce-slow"></i>
                     KTU GPA Calculator
                 </h1>
-                <p class="text-xl opacity-90">Calculate your SGPA & CGPA Easily</p>
+                <p class="text-xl opacity-90 text-center">Calculate your SGPA & CGPA Easily</p>
             </div>
         </div>
     </div>
@@ -31,47 +31,46 @@
                 </div>
                 <div class="p-6">
                     <div id="sgpaCourses" class="mb-6">
-                        <div class="course-row grid grid-cols-12 gap-4 mb-4 items-end">
-                            <div class="col-span-5">
+                        <div class="course-row grid grid-cols-1 md:grid-cols-12 gap-4 mb-4 items-end">
+                            <div class="md:col-span-5">
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Subject Name</label>
                                 <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. Linear Algebra">
                             </div>
-                            <div class="col-span-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Credits</label>
-                                <input type="number" min="1" max="5" class="credits w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" value="4">
+                            <div class="grid grid-cols-2 gap-4 md:col-span-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Credits</label>
+                                    <input type="number" min="1" max="5" class="credits w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" value="4">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Grade</label>
+                                    <select class="grade grade-select w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        <option value="10">S (10)</option>
+                                        <option value="9">A (9)</option>
+                                        <option value="8">B (8)</option>
+                                        <option value="7">C (7)</option>
+                                        <option value="6">D (6)</option>
+                                        <option value="5">E (5)</option>
+                                        <option value="0">F (0)</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-span-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Grade</label>
-                                <select class="grade grade-select w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                    <option value="10">S (10)</option>
-                                    <option value="9">A (9)</option>
-                                    <option value="8">B (8)</option>
-                                    <option value="7">C (7)</option>
-                                    <option value="6">D (6)</option>
-                                    <option value="5">E (5)</option>
-                                    <option value="0">F (0)</option>
-                                </select>
-                            </div>
-                            <div class="col-span-1 flex justify-end">
-                                <button class="remove-course bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition-colors">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
+                            <div class="md:col-span-1 flex justify-end md:justify-center">
+                                </div>
                         </div>
                     </div>
                     
-                    <div class="flex justify-between mb-6">
-                        <button id="addCourse" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center">
+                    <div class="flex flex-col sm:flex-row justify-between gap-4 mb-6">
+                        <button id="addCourse" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center">
                             <i class="fas fa-plus mr-2"></i> Add Course
                         </button>
-                        <button id="calculateSGPA" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors flex items-center">
+                        <button id="calculateSGPA" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors flex items-center justify-center">
                             <i class="fas fa-calculator mr-2"></i> Calculate SGPA
                         </button>
                     </div>
                     
                     <div id="sgpaResult" class="hidden bg-gray-100 p-4 rounded-md">
                         <h3 class="text-lg font-medium text-gray-800 mb-2">Semester Results</h3>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <p class="text-sm text-gray-600">Total Credits:</p>
                                 <p id="totalCredits" class="text-xl font-semibold">0</p>
@@ -81,7 +80,7 @@
                                 <p id="totalGradePoints" class="text-xl font-semibold">0</p>
                             </div>
                         </div>
-                        <div class="mt-4 pt-4 border-t border-gray-300">
+                        <div class="mt-4 pt-4 border-t border-gray-300 text-center">
                             <p class="text-sm text-gray-600">Your SGPA:</p>
                             <p id="sgpaValue" class="text-3xl font-bold text-indigo-600">0.00</p>
                         </div>
@@ -97,44 +96,43 @@
                 </div>
                 <div class="p-6">
                     <div id="semesterResults" class="mb-6">
-                        <div class="semester-row grid grid-cols-12 gap-4 mb-4 items-end">
-                            <div class="col-span-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Semester</label>
-                                <select class="semester-select w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                                    <option value="1">Semester 1</option>
-                                    <option value="2">Semester 2</option>
-                                    <option value="3">Semester 3</option>
-                                    <option value="4">Semester 4</option>
-                                    <option value="5">Semester 5</option>
-                                    <option value="6">Semester 6</option>
-                                    <option value="7">Semester 7</option>
-                                    <option value="8">Semester 8</option>
-                                </select>
+                        <div class="semester-row grid grid-cols-1 md:grid-cols-12 gap-4 mb-4 items-end">
+                            <div class="grid grid-cols-2 gap-4 md:col-span-10">
+                                <div class="col-span-2 sm:col-span-1">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+                                    <select class="semester-select w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                        <option value="1">Semester 1</option>
+                                        <option value="2">Semester 2</option>
+                                        <option value="3">Semester 3</option>
+                                        <option value="4">Semester 4</option>
+                                        <option value="5">Semester 5</option>
+                                        <option value="6">Semester 6</option>
+                                        <option value="7">Semester 7</option>
+                                        <option value="8">Semester 8</option>
+                                    </select>
+                                </div>
+                                <div class="col-span-2 sm:col-span-1">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">SGPA</label>
+                                    <input type="number" step="0.01" min="0" max="10" class="sgpa w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. 8.5">
+                                </div>
                             </div>
-                            <div class="col-span-4">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">SGPA</label>
-                                <input type="number" step="0.01" min="0" max="10" class="sgpa w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. 8.5">
-                            </div>
-                            <div class="col-span-2 flex justify-end">
-                                <button class="remove-semester bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition-colors">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
+                            <div class="md:col-span-2 flex justify-end md:justify-center">
+                                </div>
                         </div>
                     </div>
                     
-                    <div class="flex justify-between mb-6">
-                        <button id="addSemester" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center">
+                    <div class="flex flex-col sm:flex-row justify-between gap-4 mb-6">
+                        <button id="addSemester" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center">
                             <i class="fas fa-plus mr-2"></i> Add Semester
                         </button>
-                        <button id="calculateCGPA" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors flex items-center">
+                        <button id="calculateCGPA" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors flex items-center justify-center">
                             <i class="fas fa-calculator mr-2"></i> Calculate CGPA
                         </button>
                     </div>
                     
                     <div id="cgpaResult" class="hidden bg-gray-100 p-4 rounded-md">
                         <h3 class="text-lg font-medium text-gray-800 mb-2">Overall Results</h3>
-                        <div class="grid grid-cols-2 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
                                 <p class="text-sm text-gray-600">Total Semesters:</p>
                                 <p id="totalSemesters" class="text-xl font-semibold">0</p>
@@ -144,7 +142,7 @@
                                 <p id="totalSGPA" class="text-xl font-semibold">0</p>
                             </div>
                         </div>
-                        <div class="mt-4 pt-4 border-t border-gray-300">
+                        <div class="mt-4 pt-4 border-t border-gray-300 text-center">
                             <p class="text-sm text-gray-600">Your CGPA:</p>
                             <p id="cgpaValue" class="text-3xl font-bold text-indigo-600">0.00</p>
                         </div>
@@ -157,7 +155,7 @@
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
                 <i class="fas fa-info-circle mr-3 text-indigo-600"></i> About KTU Grading System
             </h2>
-            <div class="grid md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                     <h3 class="text-lg font-semibold text-gray-700 mb-2">Grade Points</h3>
                     <div class="overflow-x-auto">
@@ -193,7 +191,7 @@
                                 <tr>
                                     <td class="px-4 py-2 whitespace-nowrap">D</td>
                                     <td class="px-4 py-2 whitespace-nowrap">6</td>
-                                    <td class="px-4 py-2 whitespace-nowrap">60-69%</td>
+                                    <td class="px-4 py=2 whitespace-nowrap">60-69%</td>
                                 </tr>
                                 <tr>
                                     <td class="px-4 py-2 whitespace-nowrap">E</td>
