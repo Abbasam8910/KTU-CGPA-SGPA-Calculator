@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KTU CGPA & SGPA Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .grade-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1.5em;
+        }
+        .animate-bounce-slow {
+            animation: bounce 3s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="gradient-bg text-white py-8 shadow-lg">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center">
+                <h1 class="text-4xl font-bold mb-2 flex items-center">
+                    <i class="fas fa-calculator mr-3 animate-bounce-slow"></i>
+                    KTU GPA Calculator
+                </h1>
+                <p class="text-xl opacity-90">Calculate your SGPA & CGPA with ease</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- SGPA Calculator -->
+            <div class="flex-1 bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 card-hover">
+                <div class="gradient-bg px-6 py-4">
+                    <h2 class="text-xl font-semibold text-white flex items-center">
+                        <i class="fas fa-graduation-cap mr-2"></i> SGPA Calculator
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <div id="sgpaCourses" class="mb-6">
+                        <div class="course-row grid grid-cols-12 gap-4 mb-4 items-end">
+                            <div class="col-span-5">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Subject Name</label>
+                                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. Linear Algebra">
+                            </div>
+                            <div class="col-span-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Credits</label>
+                                <input type="number" min="1" max="5" class="credits w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" value="4">
+                            </div>
+                            <div class="col-span-3">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Grade</label>
+                                <select class="grade grade-select w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="10">S (10)</option>
+                                    <option value="9">A (9)</option>
+                                    <option value="8">B (8)</option>
+                                    <option value="7">C (7)</option>
+                                    <option value="6">D (6)</option>
+                                    <option value="5">E (5)</option>
+                                    <option value="0">F (0)</option>
+                                </select>
+                            </div>
+                            <div class="col-span-1 flex justify-end">
+                                <button class="remove-course bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition-colors">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between mb-6">
+                        <button id="addCourse" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Add Course
+                        </button>
+                        <button id="calculateSGPA" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors flex items-center">
+                            <i class="fas fa-calculator mr-2"></i> Calculate SGPA
+                        </button>
+                    </div>
+                    
+                    <div id="sgpaResult" class="hidden bg-gray-100 p-4 rounded-md">
+                        <h3 class="text-lg font-medium text-gray-800 mb-2">Semester Results</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-600">Total Credits:</p>
+                                <p id="totalCredits" class="text-xl font-semibold">0</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Total Grade Points:</p>
+                                <p id="totalGradePoints" class="text-xl font-semibold">0</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-300">
+                            <p class="text-sm text-gray-600">Your SGPA:</p>
+                            <p id="sgpaValue" class="text-3xl font-bold text-indigo-600">0.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CGPA Calculator -->
+            <div class="flex-1 bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 card-hover">
+                <div class="gradient-bg px-6 py-4">
+                    <h2 class="text-xl font-semibold text-white flex items-center">
+                        <i class="fas fa-trophy mr-2"></i> CGPA Calculator
+                    </h2>
+                </div>
+                <div class="p-6">
+                    <div id="semesterResults" class="mb-6">
+                        <div class="semester-row grid grid-cols-12 gap-4 mb-4 items-end">
+                            <div class="col-span-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+                                <select class="semester-select w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="1">Semester 1</option>
+                                    <option value="2">Semester 2</option>
+                                    <option value="3">Semester 3</option>
+                                    <option value="4">Semester 4</option>
+                                    <option value="5">Semester 5</option>
+                                    <option value="6">Semester 6</option>
+                                    <option value="7">Semester 7</option>
+                                    <option value="8">Semester 8</option>
+                                </select>
+                            </div>
+                            <div class="col-span-4">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">SGPA</label>
+                                <input type="number" step="0.01" min="0" max="10" class="sgpa w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. 8.5">
+                            </div>
+                            <div class="col-span-2 flex justify-end">
+                                <button class="remove-semester bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition-colors">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between mb-6">
+                        <button id="addSemester" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition-colors flex items-center">
+                            <i class="fas fa-plus mr-2"></i> Add Semester
+                        </button>
+                        <button id="calculateCGPA" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors flex items-center">
+                            <i class="fas fa-calculator mr-2"></i> Calculate CGPA
+                        </button>
+                    </div>
+                    
+                    <div id="cgpaResult" class="hidden bg-gray-100 p-4 rounded-md">
+                        <h3 class="text-lg font-medium text-gray-800 mb-2">Overall Results</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-600">Total Semesters:</p>
+                                <p id="totalSemesters" class="text-xl font-semibold">0</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Total SGPA:</p>
+                                <p id="totalSGPA" class="text-xl font-semibold">0</p>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-300">
+                            <p class="text-sm text-gray-600">Your CGPA:</p>
+                            <p id="cgpaValue" class="text-3xl font-bold text-indigo-600">0.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Information Section -->
+        <div class="mt-12 bg-white rounded-xl shadow-md overflow-hidden p-6">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-info-circle mr-3 text-indigo-600"></i> About KTU Grading System
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Grade Points</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Points</th>
+                                    <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-4 py-2 whitespace-nowrap">S</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">10</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">90% and above</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 whitespace-nowrap">A</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">9</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">85-89%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 whitespace-nowrap">B</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">8</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">80-84%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 whitespace-nowrap">C</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">7</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">70-79%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 whitespace-nowrap">D</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">6</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">60-69%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 whitespace-nowrap">E</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">5</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">50-59%</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-4 py-2 whitespace-nowrap">F</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">0</td>
+                                    <td class="px-4 py-2 whitespace-nowrap">Below 50%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">How to Calculate</h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-indigo-50 rounded-lg">
+                            <h4 class="font-medium text-indigo-800 mb-1">SGPA Calculation</h4>
+                            <p class="text-sm text-gray-700">SGPA = Σ(Credit × Grade Point) / ΣCredits</p>
+                        </div>
+                        <div class="p-4 bg-indigo-50 rounded-lg">
+                            <h4 class="font-medium text-indigo-800 mb-1">CGPA Calculation</h4>
+                            <p class="text-sm text-gray-700">CGPA = Σ(SGPA of each semester) / Number of semesters</p>
+                        </div>
+                        <div class="p-4 bg-yellow-50 rounded-lg">
+                            <h4 class="font-medium text-yellow-800 mb-1">Note</h4>
+                            <p class="text-sm text-gray-700">For KTU, CGPA is calculated by averaging the SGPA of all semesters completed so far.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="gradient-bg text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">KTU GPA Calculator - For APJ Abdul Kalam Technological University</p>
+            <p class="text-sm opacity-80">Made with <i class="fas fa-heart text-red-300"></i> for KTU students</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // SGPA Calculator
+            const sgpaCourses = document.getElementById('sgpaCourses');
+            const addCourseBtn = document.getElementById('addCourse');
+            const calculateSGPABtn = document.getElementById('calculateSGPA');
+            const sgpaResult = document.getElementById('sgpaResult');
+            
+            // CGPA Calculator
+            const semesterResults = document.getElementById('semesterResults');
+            const addSemesterBtn = document.getElementById('addSemester');
+            const calculateCGPABtn = document.getElementById('calculateCGPA');
+            const cgpaResult = document.getElementById('cgpaResult');
+            
+            // Add new course row
+            addCourseBtn.addEventListener('click', function() {
+                const newRow = document.createElement('div');
+                newRow.className = 'course-row grid grid-cols-12 gap-4 mb-4 items-end';
+                newRow.innerHTML = `
+                    <div class="col-span-5">
+                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. Data Structures">
+                    </div>
+                    <div class="col-span-3">
+                        <input type="number" min="1" max="5" class="credits w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" value="4">
+                    </div>
+                    <div class="col-span-3">
+                        <select class="grade grade-select w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="10">S (10)</option>
+                            <option value="9">A (9)</option>
+                            <option value="8">B (8)</option>
+                            <option value="7">C (7)</option>
+                            <option value="6">D (6)</option>
+                            <option value="5">E (5)</option>
+                            <option value="0">F (0)</option>
+                        </select>
+                    </div>
+                    <div class="col-span-1 flex justify-end">
+                        <button class="remove-course bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition-colors">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                sgpaCourses.appendChild(newRow);
+                
+                // Add event listener to the new remove button
+                newRow.querySelector('.remove-course').addEventListener('click', function() {
+                    sgpaCourses.removeChild(newRow);
+                });
+            });
+            
+            // Calculate SGPA
+            calculateSGPABtn.addEventListener('click', function() {
+                const courseRows = sgpaCourses.querySelectorAll('.course-row');
+                let totalCredits = 0;
+                let totalGradePoints = 0;
+                
+                courseRows.forEach(row => {
+                    const credits = parseFloat(row.querySelector('.credits').value);
+                    const grade = parseFloat(row.querySelector('.grade').value);
+                    
+                    totalCredits += credits;
+                    totalGradePoints += credits * grade;
+                });
+                
+                const sgpa = totalGradePoints / totalCredits;
+                
+                document.getElementById('totalCredits').textContent = totalCredits;
+                document.getElementById('totalGradePoints').textContent = totalGradePoints.toFixed(2);
+                document.getElementById('sgpaValue').textContent = sgpa.toFixed(2);
+                
+                sgpaResult.classList.remove('hidden');
+            });
+            
+            // Add new semester row
+            addSemesterBtn.addEventListener('click', function() {
+                const newRow = document.createElement('div');
+                newRow.className = 'semester-row grid grid-cols-12 gap-4 mb-4 items-end';
+                newRow.innerHTML = `
+                    <div class="col-span-6">
+                        <select class="semester-select w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                            <option value="7">Semester 7</option>
+                            <option value="8">Semester 8</option>
+                        </select>
+                    </div>
+                    <div class="col-span-4">
+                        <input type="number" step="0.01" min="0" max="10" class="sgpa w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. 8.5">
+                    </div>
+                    <div class="col-span-2 flex justify-end">
+                        <button class="remove-semester bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition-colors">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                semesterResults.appendChild(newRow);
+                
+                // Add event listener to the new remove button
+                newRow.querySelector('.remove-semester').addEventListener('click', function() {
+                    semesterResults.removeChild(newRow);
+                });
+            });
+            
+            // Calculate CGPA
+            calculateCGPABtn.addEventListener('click', function() {
+                const semesterRows = semesterResults.querySelectorAll('.semester-row');
+                let totalSemesters = 0;
+                let totalSGPA = 0;
+                
+                semesterRows.forEach(row => {
+                    const sgpa = parseFloat(row.querySelector('.sgpa').value);
+                    if (!isNaN(sgpa)) {
+                        totalSemesters++;
+                        totalSGPA += sgpa;
+                    }
+                });
+                
+                const cgpa = totalSGPA / totalSemesters;
+                
+                document.getElementById('totalSemesters').textContent = totalSemesters;
+                document.getElementById('totalSGPA').textContent = totalSGPA.toFixed(2);
+                document.getElementById('cgpaValue').textContent = cgpa.toFixed(2);
+                
+                cgpaResult.classList.remove('hidden');
+            });
+            
+            // Initialize with one course and one semester
+            addCourseBtn.click();
+            addSemesterBtn.click();
+        });
+    </script>
+</body>
+</html>
